@@ -36,11 +36,11 @@ class ExponentialFamily(object):
         grad: p x m array, gradient for each natural parameter, for each observation
         """
         return self.calc_suff_stats_moments(1) - self.convert_to_suff_stats(x)
-        
+
     def fisher_info(self):
         """
         Compute the Fisher information I(η) with respect to each of the natural parameters eta.
-        
+
         Returns
         ----------
         fisher: p x m array, Fisher information for each natural parameter, for each observation.
@@ -82,6 +82,10 @@ class ExponentialFamily(object):
         Parameters
         ----------
         x: m-length array of observations
+
+        Returns
+        -------
+        T: p x m array, sufficient statistics for each parameter, for each observation
         """
         raise NotImplementedError
 
@@ -121,7 +125,7 @@ class Bernoulli(ExponentialFamily):
 
 
 class Poisson(ExponentialFamily):
-    
+
     def __init__(self, eta):
         self.dist = sp.stats.poisson(mu=np.exp(eta.squeeze()))
 
@@ -159,7 +163,7 @@ class Gaussian(ExponentialFamily):
 
 
 class Categorical(ExponentialFamily):
-    
+
     def __init__(self, eta):
         self.dist = sp.stats.multinomial(n=1, p=sp.special.softmax(eta, axis=1))
         self.n_categories = eta.shape[1]

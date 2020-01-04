@@ -4,7 +4,7 @@ Last update: January 2020.
 
 ---
 
-A generalized linear model fits an exponential family distribution with a linear model. The resulting optimization problem is convex.
+A generalized linear model fits an exponential family distribution with a linear model. The resulting optimization problem is convex when the natural parameterization is used.
 
 **Exponential Family Distributions**
 
@@ -14,7 +14,7 @@ p_\eta(y) = b(y)\exp(\eta^\top T(y) - a(\eta)).
 $$
 
 
-Here $\eta$ is the natural parameter, $T(y)$ is the sufficient statistic, and $a(\eta)$ is the log partition function. Using a linear model with a canonical link function, we suppose 
+Here $\eta$ is the natural parameter, $T(y)$ is the sufficient statistic, and $a(\eta)$ is the log partition function. Using a linear model with a canonical link function (i.e. natural parameterization), we suppose 
 $$
 \eta = \theta x \implies \nabla_\theta \eta_i = x,\ \nabla^2_\theta \eta_i = xx^\top.
 $$
@@ -31,7 +31,7 @@ $$
 $$
 
 
-Notice that by the chain rule, we have the following score and Hessian.
+Notice that by the chain rule, we have the following score and Hessian of the log-likelihood.
 $$
 \begin{align*}
 \nabla_\theta -\log p_\theta(y) & = \nabla_\eta-\log p_\eta(y) x^\top\\
@@ -42,22 +42,11 @@ $$
 $$
 
 
-The Fisher information matrix with respect to the $i$-th row of $\theta$ is then the expected value of a constant, so
+The Fisher information matrix with respect to the $i$-th row of $\theta$ is then the expected value of a constant (i.e. the Hessian has no dependence on observations $y$), so
 $$
-\mathbb{E}_\eta[\nabla^2_{\theta_i} -\log p_\theta(y)] = \mathrm{Var}_\eta[T_i(Y)]x x^\top
+\mathbb{E}_\eta[\nabla^2_{\theta_i} -\log p_\theta(y)] = \mathrm{Var}_\eta[T_i(Y)]x x^\top.
 $$
-This coincides with a Newton-Raphson step, since we are using the canonical link function.
-
-
-
-**Link Functions**
-
-A link function relates the expected value of the response to the natural parameters,
-$$
-\mathbb{E}_{\eta}[y] = g^{-1}(\eta).
-$$
-
-In our case we only ever use the canonical link function for each distribution.
+Notice this coincides with a Newton-Raphson step.
 
 #### References
 
@@ -69,13 +58,13 @@ In our case we only ever use the canonical link function for each distribution.
 
 Here we list useful results of exponential families.
 
-**Result 1.** $T(y)$ are sufficient statistics. 
+**Result 1.** $T(y)$ are sufficient statistics for the parameters $\eta$. 
 $$
 p_\eta(y_1,\cdots,y_n) = b(y_1)\cdots b(y_n)\exp\left(\eta^\top \sum_{i=1}^n T(y_i)-na(\eta)\right)
 $$
 
 
-**Result 2.** The gradients of the log partition function always yield moments of the sufficient statistics. First recall that
+**Result 2.** The gradients of the log partition function yield moments of the sufficient statistics. First recall that
 $$
 a(\eta) = \log \int_y b(y)\exp \left(\eta^\top T(y)\right)dy.
 $$
@@ -93,7 +82,7 @@ $$
 $$
 
 
-**Result 3.** The negative log-likelihood of an exponential family distribution is always convex with respect to the natural parameters. This is because the Hessian is positive semi-definite.
+**Result 3.** The negative log-likelihood of an exponential family distribution is always convex with respect to the natural parameters. This is because the Hessian is a constant positive semi-definite matrix in this case, coinciding with the variance of the sufficient statistics and with no dependence on observations.
 $$
 \begin{align*}
 -\log p_\eta(y) & = a(\eta) -\eta^\top T(y) -\log b(y)\\
