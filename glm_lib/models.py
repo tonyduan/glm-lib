@@ -9,7 +9,7 @@ class GLM(object):
     ----------
     distn: class of ExponentialFamily
     lr: scalar learning rate
-    tol: scalar tolerance 
+    tol: scalar tolerance
     verbose: boolean
     """
     def __init__(self, distn, lr=0.1, tol=1e-3, verbose=False):
